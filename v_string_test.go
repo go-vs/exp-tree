@@ -1,8 +1,9 @@
 package exp_tree
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestString_In(t *testing.T) {

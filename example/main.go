@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	et "github.com/go-vs/exp-tree"
+	et "github.com/go-vs/exp-tree/v2"
 )
 
 func main() {
