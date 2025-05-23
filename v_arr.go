@@ -7,7 +7,7 @@ func (a Array) Type() NodeType {
 	return NValue
 }
 
-func (Array) Variables() Variables {
+func (Array) Variables() VariableMap {
 	return nil
 }
 

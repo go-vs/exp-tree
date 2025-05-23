@@ -4,5 +4,5 @@ package exp_tree
 type Value interface {
 	Type() NodeType
 	F(op Operator) MathFunc
-	Variables() Variables
+	Variables() VariableMap
 }

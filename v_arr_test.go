@@ -13,13 +13,13 @@ func TestArr_In(t *testing.T) {
 		Var(2, 3, 4),
 	)
 
-	resp, err := calc(None, tree, Variables{
+	resp, err := calc(None, tree, VariableMap{
 		"input": Var(3, 2),
 	})
 	assert.Nil(t, err)
 	assert.Equal(t, True, resp)
 
-	resp, err = calc(None, tree, Variables{
+	resp, err = calc(None, tree, VariableMap{
 		"input": Var(1, 2),
 	})
 	assert.Nil(t, err)
@@ -33,27 +33,27 @@ func TestArr_OneIn(t *testing.T) {
 		Var(2, 3, 4),
 	)
 
-	resp, err := calc(None, tree, Variables{
+	resp, err := calc(None, tree, VariableMap{
 		"input": Var(1, 2),
 	})
 	assert.Nil(t, err)
 	assert.Equal(t, True, resp)
 
-	resp, err = calc(None, tree, Variables{
+	resp, err = calc(None, tree, VariableMap{
 		"input": Var(1, 3),
 	})
 
 	assert.Nil(t, err)
 	assert.Equal(t, True, resp)
 
-	resp, err = calc(None, tree, Variables{
+	resp, err = calc(None, tree, VariableMap{
 		"input": Var(1, 4),
 	})
 
 	assert.Nil(t, err)
 	assert.Equal(t, True, resp)
 
-	resp, err = calc(None, tree, Variables{
+	resp, err = calc(None, tree, VariableMap{
 		"input": Var(1, 5),
 	})
 

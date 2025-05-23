@@ -4,20 +4,55 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
+	"strings"
 )
 
-type Variables map[Variable]Value
+type VariableMap map[Variable]any
 
-func (v Variables) Set(key Variable, value any) {
-	v[key] = Var(value)
+func (v VariableMap) Set(key Variable, value any) {
+	v[key] = value
+}
+func (v VariableMap) Get(path Variable) (Value, error) {
+	paths := strings.Split(string(path), ".")
+	if len(paths) == 1 {
+		if val, ok := v[path]; ok {
+			return Var(val), nil
+		}
+		return nil, ErrVarNotFound(string(path))
+	}
+	return v.extract(paths[0], paths[1:])
 }
 
-func (v Variables) Get(key Variable) (Value, error) {
-	value, ok := v[key]
+func (v VariableMap) extract(base string, paths []string) (Value, error) {
+	data, ok := v[Variable(base)]
 	if !ok {
-		return nil, ErrVarNotFound(string(key))
+		return nil, ErrVarNotFound(base)
 	}
-	return value, nil
+	val := reflect.ValueOf(data)
+	for _, path := range paths {
+		val = reflect.Indirect(val)
+		base += "." + path
+		switch val.Kind() {
+		case reflect.Struct:
+			val = val.FieldByName(path)
+			if !val.IsValid() {
+				return nil, ErrVarNotFound(base)
+			}
+		case reflect.Map:
+			val = val.MapIndex(reflect.ValueOf(path))
+			if !val.IsValid() {
+				return nil, ErrVarNotFound(base)
+			}
+			val = reflect.ValueOf(val.Interface())
+		default:
+			return nil, ErrVarNotFound(base)
+		}
+	}
+	res := Var(val.Interface())
+	if res == nil {
+		return nil, ErrVarNotFound(base)
+	}
+	return res, nil
 }
 
 func Var(value ...interface{}) Value {
@@ -32,9 +67,9 @@ func varOne(value interface{}) Value {
 	val := reflect.ValueOf(value)
 	switch t {
 	case reflect.String:
-		return String(value.(string))
+		return String(val.String())
 	case reflect.Bool:
-		return Bool(value.(bool))
+		return Bool(val.Bool())
 	case reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uint:
 		fallthrough
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:

@@ -6,9 +6,9 @@ type Tree struct {
 	head Node
 }
 
-func (t *Tree) Calculate(v Variables) (Value, error) {
+func (t *Tree) Calculate(v VariableMap) (Value, error) {
 	if v == nil {
-		v = Variables{}
+		v = make(VariableMap)
 	}
 	return calc(None, t.head, v)
 }
@@ -21,6 +21,6 @@ func (t *Tree) JSON() (string, error) {
 	return string(data), nil
 }
 
-func (t *Tree) Variables() Variables {
+func (t *Tree) Variables() VariableMap {
 	return t.head.Variables()
 }

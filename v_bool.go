@@ -11,26 +11,30 @@ func (b Bool) Type() NodeType {
 	return NValue
 }
 
-func (b Bool) Variables() Variables {
+func (b Bool) Variables() VariableMap {
 	return nil
 }
 
 const True = Bool(true)
 const False = Bool(false)
 
-var bAnd = chainValue(chain(as[Array], asArr[Bool]), typedReduce(func(acc Bool, v Bool, idx int) (Bool, error) {
-	if v == False {
-		return False, Break
+var bAnd = chainValue(chain(as[Array], asArr[Bool]), func(arr []Bool) (Bool, error) {
+	for _, v := range arr {
+		if v == False {
+			return False, nil
+		}
 	}
-	return acc, nil
-}, True))
+	return True, nil
+})
 
-var bOr = chainValue(chain(as[Array], asArr[Bool]), typedReduce(func(acc Bool, v Bool, idx int) (Bool, error) {
-	if v == True {
-		return True, Break
+var bOr = chainValue(chain(as[Array], asArr[Bool]), func(arr []Bool) (Bool, error) {
+	for _, v := range arr {
+		if v == True {
+			return True, nil
+		}
 	}
-	return acc, nil
-}, False))
+	return False, nil
+})
 
 var bNot = chainValue(as[Bool], func(v Bool) (Bool, error) {
 	return !v, nil

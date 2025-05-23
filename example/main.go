@@ -11,7 +11,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	res, err := tree.Calculate(et.Variables{
+	res, err := tree.Calculate(et.VariableMap{
 		"a": et.True, // or et.Var(true)
 	})
 	fmt.Println(res) // true

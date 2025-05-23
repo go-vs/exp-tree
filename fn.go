@@ -29,45 +29,6 @@ func asArr[T Value](v Array) ([]T, error) {
 
 var Break = errors.New("break")
 
-// typedReduce: golang generic has limitations
-func typedReduce[T Value, V Value](fn func(acc T, v V, idx int) (T, error), initValue T) func(arr []V) (T, error) {
-	return func(arr []V) (T, error) {
-		var res = initValue
-		var err error
-		for i, v := range arr {
-			res, err = chain(as[V], func(v V) (T, error) {
-				return fn(res, v, i)
-			})(v)
-			if err != nil {
-				if errors.Is(err, Break) {
-					return res, nil
-				}
-				return res, err
-			}
-		}
-		return res, nil
-	}
-}
-
-func reduce[T Value, V Value](fn func(acc T, v V, idx int) (T, error), initValue T) func(arr Array) (T, error) {
-	return func(arr Array) (T, error) {
-		var res = initValue
-		var err error
-		for i, v := range arr {
-			res, err = chain(as[V], func(v V) (T, error) {
-				return fn(res, v, i)
-			})(v)
-			if err != nil {
-				if errors.Is(err, Break) {
-					return res, nil
-				}
-				return res, err
-			}
-		}
-		return res, nil
-	}
-}
-
 func chain[F, T, O any](a func(F) (T, error), b func(T) (O, error)) func(data F) (O, error) {
 	return func(data F) (O, error) {
 		var zero O

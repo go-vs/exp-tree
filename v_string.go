@@ -11,7 +11,7 @@ func (s String) F(op Operator) MathFunc {
 	return stringMap[op]
 }
 
-func (String) Variables() Variables {
+func (String) Variables() VariableMap {
 	return nil
 }
 

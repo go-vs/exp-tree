@@ -16,7 +16,7 @@ func TestNumber_Equal(t *testing.T) {
 	v := []Number{1, 2, 2}
 	for _, a := range v {
 		for _, b := range v {
-			res, err := calc(None, tree, Variables{
+			res, err := calc(None, tree, VariableMap{
 				"A": a,
 				"B": b,
 			})
@@ -35,7 +35,7 @@ func TestNumber_Sum(t *testing.T) {
 	for i := 0; i < 1000; i++ {
 		a := rand.Float64()
 		b := rand.Float64()
-		res, err := calc(None, tree, Variables{
+		res, err := calc(None, tree, VariableMap{
 			"A": Var(a),
 			"B": Var(b),
 		})
@@ -53,7 +53,7 @@ func TestNumber_Mul(t *testing.T) {
 	for i := 0; i < 1000; i++ {
 		a := rand.Float64()
 		b := rand.Float64()
-		res, err := calc(None, tree, Variables{
+		res, err := calc(None, tree, VariableMap{
 			"A": Var(a),
 			"B": Var(b),
 		})
@@ -71,7 +71,7 @@ func TestNumber_Gt(t *testing.T) {
 	for i := 0; i < 1000; i++ {
 		a := rand.Float64()
 		b := rand.Float64()
-		res, err := calc(None, tree, Variables{
+		res, err := calc(None, tree, VariableMap{
 			"A": Var(a),
 			"B": Var(b),
 		})
@@ -89,7 +89,7 @@ func TestNumber_Gte(t *testing.T) {
 	for i := 0; i < 1000; i++ {
 		a := rand.Float64()
 		b := rand.Float64()
-		res, err := calc(None, tree, Variables{
+		res, err := calc(None, tree, VariableMap{
 			"A": Var(a),
 			"B": Var(b),
 		})
@@ -107,7 +107,7 @@ func TestNumber_Lt(t *testing.T) {
 	for i := 0; i < 1000; i++ {
 		a := rand.Float64()
 		b := rand.Float64()
-		res, err := calc(None, tree, Variables{
+		res, err := calc(None, tree, VariableMap{
 			"A": Var(a),
 			"B": Var(b),
 		})
@@ -125,7 +125,7 @@ func TestNumber_Lte(t *testing.T) {
 	for i := 0; i < 1000; i++ {
 		a := rand.Float64()
 		b := rand.Float64()
-		res, err := calc(None, tree, Variables{
+		res, err := calc(None, tree, VariableMap{
 			"A": Var(a),
 			"B": Var(b),
 		})
@@ -143,7 +143,7 @@ func TestNumber_Div(t *testing.T) {
 	for i := 0; i < 1000; i++ {
 		a := rand.Float64()
 		b := rand.Float64()
-		res, err := calc(None, tree, Variables{
+		res, err := calc(None, tree, VariableMap{
 			"A": Var(a),
 			"B": Var(b),
 		})
@@ -158,12 +158,12 @@ func TestNumber_In(t *testing.T) {
 		Var(1),
 		Variable("A"),
 	)
-	res, err := calc(None, tree, Variables{
+	res, err := calc(None, tree, VariableMap{
 		"A": Var(1, 2),
 	})
 	assert.Nil(t, err)
 	assert.Equal(t, True, res)
-	res, err = calc(None, tree, Variables{
+	res, err = calc(None, tree, VariableMap{
 		"A": Var(2, 3),
 	})
 	assert.Nil(t, err)

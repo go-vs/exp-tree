@@ -8,10 +8,10 @@ func calcValue(op Operator, value Value) (Value, error) {
 	return math(value)
 }
 
-func calc(op Operator, t Node, vars Variables) (Value, error) {
+func calc(op Operator, t Node, varMap VariableMap) (Value, error) {
 	switch t.Type() {
 	case NVariable:
-		val, err := vars.Get(t.(Variable))
+		val, err := varMap.Get(t.(Variable))
 		if err != nil {
 			return nil, err
 		}
@@ -21,7 +21,7 @@ func calc(op Operator, t Node, vars Variables) (Value, error) {
 		return calcValue(op, value)
 	case NOperation:
 		nop := t.(*Operation)
-		res, err := calc(nop.op, nop.args, vars)
+		res, err := calc(nop.op, nop.args, varMap)
 		if err != nil {
 			return nil, err
 		}
@@ -30,13 +30,13 @@ func calc(op Operator, t Node, vars Variables) (Value, error) {
 		group := t.(Group)
 		arr := make(Array, 0, len(group))
 		for _, n := range group {
-			value, err := calc(None, n, vars)
+			value, err := calc(None, n, varMap)
 			if err != nil {
 				return nil, err
 			}
 			arr = append(arr, value)
 		}
-		return calc(op, arr, vars)
+		return calc(op, arr, varMap)
 	default:
 		return nil, ErrCalcTree
 	}

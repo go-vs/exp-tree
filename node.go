@@ -13,7 +13,7 @@ const (
 // Node interface
 type Node interface {
 	Type() NodeType
-	Variables() Variables
+	Variables() VariableMap
 }
 
 // Group composite node
@@ -23,8 +23,8 @@ func (Group) Type() NodeType {
 	return NGroup
 }
 
-func (g Group) Variables() Variables {
-	res := make(Variables)
+func (g Group) Variables() VariableMap {
+	res := make(VariableMap)
 	for _, node := range g {
 		for k := range node.Variables() {
 			res[k] = nil

@@ -8,8 +8,8 @@ type Variable string
 func (Variable) Type() NodeType {
 	return NVariable
 }
-func (v Variable) Variables() Variables {
-	return Variables{v: nil}
+func (v Variable) Variables() VariableMap {
+	return VariableMap{v: nil}
 }
 
 func (v Variable) MarshalJSON() ([]byte, error) {

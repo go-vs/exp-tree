@@ -15,7 +15,7 @@ func (n Number) Type() NodeType {
 	return NValue
 }
 
-func (Number) Variables() Variables {
+func (Number) Variables() VariableMap {
 	return nil
 }
 

@@ -13,7 +13,7 @@ func (*Operation) Type() NodeType {
 	return NOperation
 }
 
-func (o Operation) Variables() Variables {
+func (o Operation) Variables() VariableMap {
 	return o.args.Variables()
 }
 
