@@ -6,41 +6,19 @@ var NoneFn MathFunc = func(value Value) (Value, error) {
 	return value, nil
 }
 
-// ValidateFunc validate args before do the math
-type ValidateFunc func(value Value) error
-
-func (v ValidateFunc) With(f ComputeFunc) *Math {
-	return &Math{
-		v: v,
-		f: f,
+func arrIn[T Value](arrs Array) (Value, error) {
+	now, err := as[T](arrs[0])
+	if err != nil {
+		return False, err
 	}
-}
-
-// ComputeFunc do the math
-type ComputeFunc func(value Value) Value
-
-// Math Some random asian will do the math for us
-type Math struct {
-	v ValidateFunc
-	f ComputeFunc
-}
-
-// calc Math do the math for us
-func (m *Math) calc(value Value) (Value, error) {
-	if m.v != nil {
-		if err := m.v(value); err != nil {
-			return nil, err
-		}
-	}
-	return m.f(value), nil
-}
-
-// Keep when the mathematician bored, they leave the value intact
-var Keep = &Math{
-	v: func(_ Value) error {
-		return nil
-	},
-	f: func(v Value) Value {
-		return v
-	},
+	return chain(
+		asArr[Array], func(arrs []Array) (Bool, error) {
+			for _, arr := range arrs {
+				if arr.toMap()[now] != 0 {
+					return True, nil
+				}
+			}
+			return False, nil
+		},
+	)(arrs[1:])
 }

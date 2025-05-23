@@ -8,6 +8,10 @@ import (
 
 type Variables map[Variable]Value
 
+func (v Variables) Set(key Variable, value any) {
+	v[key] = Var(value)
+}
+
 func (v Variables) Get(key Variable) (Value, error) {
 	value, ok := v[key]
 	if !ok {

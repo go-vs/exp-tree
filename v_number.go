@@ -21,13 +21,13 @@ func (Number) Variables() Variables {
 
 var numberMap = map[Operator]MathFunc{
 	Sum: chainValue(chain(as[Array], asArr[Number]), numberSum),
-	Mul: numberMul,
-	Gt:  numberGt,
-	Gte: numberGte,
-	Lt:  numberLt,
-	Lte: numberLte,
-	Div: numberDiv,
-	In:  numberIn,
+	Mul: chainValue(chain(as[Array], asArr[Number]), numberMul),
+	Gt:  chainValue(chain(as[Array], asArr[Number]), numberGT),
+	Gte: chainValue(chain(as[Array], asArr[Number]), numberGTE),
+	Lt:  chainValue(chain(as[Array], asArr[Number]), numberLT),
+	Lte: chainValue(chain(as[Array], asArr[Number]), numberLTE),
+	Div: chainValue(chain(as[Array], asArr[Number]), numberDiv),
+	In:  chainValue(as[Array], arrIn[Number]),
 	Eq:  chainValue(chain(as[Array], asArr[Number]), numberEq),
 }
 
@@ -98,41 +98,4 @@ func numberDiv(t []Number) (Number, error) {
 		res /= v
 	}
 	return res, nil
-}
-
-func NumberIn(t []Number) (Bool, error) {
-	for i := 1; i < len(t); i++ {
-		if t[i-1] == t[i] {
-			return True, nil
-		}
-	}
-	return False, nil
-}
-
-var numberIn = &Math{
-	v: func(value Value) error {
-		if err := isArr(value); err != nil {
-			return err
-		}
-		values := value.(Array)
-		if err := isNumber(values[0]); err != nil {
-			return err
-		}
-		for _, v := range values[1:] {
-			if err := isNumberArr(v); err != nil {
-				return err
-			}
-		}
-		return nil
-	},
-	f: func(value Value) Value {
-		values := value.(Array)
-		now := values[0].(Number)
-		for _, arr := range values[1:] {
-			if arr.(Array).toMap()[now] == 0 {
-				return False
-			}
-		}
-		return True
-	},
 }

@@ -5,7 +5,7 @@ func calcValue(op Operator, value Value) (Value, error) {
 	if math == nil {
 		return nil, ErrOperatorNotSupported(op, value)
 	}
-	return math.calc(value)
+	return math(value)
 }
 
 func calc(op Operator, t Node, vars Variables) (Value, error) {

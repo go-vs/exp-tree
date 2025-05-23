@@ -18,14 +18,14 @@ func (b Bool) Variables() Variables {
 const True = Bool(true)
 const False = Bool(false)
 
-var bAnd = chainValue(as[Array], reduce(func(acc Bool, v Value, idx int) (Bool, error) {
+var bAnd = chainValue(chain(as[Array], asArr[Bool]), typedReduce(func(acc Bool, v Bool, idx int) (Bool, error) {
 	if v == False {
 		return False, Break
 	}
 	return acc, nil
 }, True))
 
-var bOr = chainValue(as[Array], reduce(func(acc Bool, v Value, idx int) (Bool, error) {
+var bOr = chainValue(chain(as[Array], asArr[Bool]), typedReduce(func(acc Bool, v Bool, idx int) (Bool, error) {
 	if v == True {
 		return True, Break
 	}

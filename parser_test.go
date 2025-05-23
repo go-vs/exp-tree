@@ -2,8 +2,9 @@ package exp_tree
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestParseTree(t *testing.T) {

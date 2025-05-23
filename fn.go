@@ -2,13 +2,8 @@ package exp_tree
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 )
-
-var ErrInvalidConversion = func(v Value, dstType string) error {
-	return fmt.Errorf(`invalid conversion "%v" to %s`, v, dstType)
-}
 
 func as[T Value](v Value) (T, error) {
 	var zero T
@@ -32,11 +27,27 @@ func asArr[T Value](v Array) ([]T, error) {
 	return res, nil
 }
 
-func asValue[T Value](v T) (Value, error) {
-	return v, nil
-}
-
 var Break = errors.New("break")
+
+// typedReduce: golang generic has limitations
+func typedReduce[T Value, V Value](fn func(acc T, v V, idx int) (T, error), initValue T) func(arr []V) (T, error) {
+	return func(arr []V) (T, error) {
+		var res = initValue
+		var err error
+		for i, v := range arr {
+			res, err = chain(as[V], func(v V) (T, error) {
+				return fn(res, v, i)
+			})(v)
+			if err != nil {
+				if errors.Is(err, Break) {
+					return res, nil
+				}
+				return res, err
+			}
+		}
+		return res, nil
+	}
+}
 
 func reduce[T Value, V Value](fn func(acc T, v V, idx int) (T, error), initValue T) func(arr Array) (T, error) {
 	return func(arr Array) (T, error) {

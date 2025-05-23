@@ -1,2 +1,23 @@
-.idea
-.vscode
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Dependency directories (vendor/)
+vendor/
+
+# GoLand IDE files
+.idea/
+
+# VS Code IDE files
+.vscode/
+
+# macOS system files
+.DS_Store

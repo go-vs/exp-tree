@@ -15,7 +15,8 @@ func (a Array) F(op Operator) MathFunc {
 
 	switch op {
 	case In:
-		if err := isArr(a[0]); err != nil {
+		_, err := as[Array](a[0])
+		if err != nil {
 			return a[0].F(op)
 		}
 		fallthrough
@@ -29,30 +30,34 @@ func (a Array) F(op Operator) MathFunc {
 }
 
 var arrMap = map[Operator]MathFunc{
-	In: chainValue(as[Array], reduce(func(acc Bool, v Value, idx int) (Bool, error) {
-		return acc, nil
-	}, False)),
-	OneIn: chainValue(as[Array], func(arr Array) (Bool, error) {
-		firstElem, err := as[Array](arr[0])
-		if err != nil {
-			return False, err
-		}
-		mp := firstElem.toMap()
-		return reduce(func(acc Bool, v Array, idx int) (Bool, error) {
-			e, err := as[Array](v)
-			if err != nil {
-				return False, err
+	In: chainValue(chain(as[Array], asArr[Array]), func(arrs []Array) (Bool, error) {
+		mp := arrs[0].toMap()
+		for _, arr := range arrs[1:] {
+			vMp := arr.toMap()
+			for k := range mp {
+				if vMp[k] == 0 {
+					return False, nil
+				}
 			}
-			vMp := e.toMap()
+		}
+		return True, nil
+	}),
+	OneIn: chainValue(chain(as[Array], asArr[Array]), func(arrs []Array) (Bool, error) {
+		mp := arrs[0].toMap()
+		for _, arr := range arrs[1:] {
+			ok := False
+			vMp := arr.toMap()
 			for k := range mp {
 				if vMp[k] != 0 {
-					return True, nil
+					ok = True
+					break
 				}
-				return False, Break
 			}
-			return acc, nil
-		}, True)(arr[1:])
-
+			if !ok {
+				return False, nil
+			}
+		}
+		return True, nil
 	}),
 }
 
