@@ -83,6 +83,7 @@ func varOne(value interface{}) Value {
 			arr = append(arr, Var(val.Index(i).Interface()))
 		}
 		return arr
+	default:
+		return nil
 	}
-	return nil
 }

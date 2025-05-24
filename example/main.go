@@ -7,12 +7,16 @@ import (
 )
 
 func main() {
-	tree, err := et.ParseTree(`{"and":["@a",{"lt":[1,2]}]}`)
+	tree, err := et.ParseTree(`{"and":["@data.a", "@b",{"lt":[1,2]}]}`)
 	if err != nil {
 		panic(err)
 	}
-	res, err := tree.Calculate(et.VariableMap{
-		"a": et.True, // or et.Var(true)
-	})
+	vMp := make(et.VariableMap)
+	vMp.Set("data", map[string]any{"a": true})
+	vMp.Set("b", true)
+	res, err := tree.Calculate(vMp)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println(res) // true
 }

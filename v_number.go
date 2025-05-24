@@ -2,7 +2,7 @@ package exp_tree
 
 type Number float64
 
-func (n Number) F(op Operator) MathFunc {
+func (n Number) F(op Operator) CalcFn {
 	switch op {
 	case None:
 		return NoneFn
@@ -19,7 +19,7 @@ func (Number) Variables() VariableMap {
 	return nil
 }
 
-var numberMap = map[Operator]MathFunc{
+var numberMap = map[Operator]CalcFn{
 	Sum: chainValue(chain(as[Array], asArr[Number]), numberSum),
 	Mul: chainValue(chain(as[Array], asArr[Number]), numberMul),
 	Gt:  chainValue(chain(as[Array], asArr[Number]), numberGT),

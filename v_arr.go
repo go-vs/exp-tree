@@ -11,7 +11,7 @@ func (Array) Variables() VariableMap {
 	return nil
 }
 
-func (a Array) F(op Operator) MathFunc {
+func (a Array) F(op Operator) CalcFn {
 
 	switch op {
 	case In:
@@ -29,7 +29,7 @@ func (a Array) F(op Operator) MathFunc {
 	}
 }
 
-var arrMap = map[Operator]MathFunc{
+var arrMap = map[Operator]CalcFn{
 	In: chainValue(chain(as[Array], asArr[Array]), func(arrs []Array) (Bool, error) {
 		mp := arrs[0].toMap()
 		for _, arr := range arrs[1:] {

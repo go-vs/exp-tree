@@ -1,7 +1,6 @@
 package exp_tree
 
 import (
-	"errors"
 	"reflect"
 )
 
@@ -26,8 +25,6 @@ func asArr[T Value](v Array) ([]T, error) {
 	}
 	return res, nil
 }
-
-var Break = errors.New("break")
 
 func chain[F, T, O any](a func(F) (T, error), b func(T) (O, error)) func(data F) (O, error) {
 	return func(data F) (O, error) {

@@ -1,13 +1,21 @@
-# GO-VS expression tree
+# GO-VS expression tree V2
 
-[![Status](https://github.com/go-vs/exp-tree/actions/workflows/go.yml/badge.svg?branch=main)](https://github.com/go-vs/exp-tree/actions/workflows/go.yml)
+ 
+[![Status](https://github.com/go-vs/exp-tree/actions/workflows/go.yml/badge.svg?branch=v2](https://github.com/go-vs/exp-tree/actions/workflows/go.yml)
 
-Exp-tree is go library for parsing expression tree
+Exp-tree is go library for parsing expression tree. V2 is a major update with new features and improvements.
+- Variable struct/map type supported
+- Use `gEnErIc`
+
+TODO:
+- Custom operator
+- Shunting Yard algorithm parser
+- Array index
 
 ## Installation
 
 ```sh
-go get -u github.com/go-vs/exp-tree
+go get -u github.com/go-vs/exp-tree/v2
 ```
 
 ## Quick start
@@ -67,7 +75,7 @@ package main
 
 import (
 	"fmt"
-	et "github.com/go-vs/exp-tree"
+	et "github.com/go-vs/exp-tree/v2"
 )
 
 func main() {
@@ -90,17 +98,22 @@ package main
 
 import (
 	"fmt"
-	et "github.com/go-vs/exp-tree"
+
+	et "github.com/go-vs/exp-tree/v2"
 )
 
 func main() {
-	tree, err := et.ParseTree(`{"and":["@a",{"lt":[1,2]}]}`)
+	tree, err := et.ParseTree(`{"and":["@data.a", "@b",{"lt":[1,2]}]}`)
 	if err != nil {
 		panic(err)
 	}
-	res, err := tree.Calculate(et.Variables{
-		"a": et.True, // or et.Var(true)
-	})
+	vMp := make(et.VariableMap)
+	vMp.Set("data", map[string]any{"a": true})
+	vMp.Set("b", true)
+	res, err := tree.Calculate(vMp)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println(res) // true
 }
 ```

@@ -1,8 +1,8 @@
 package exp_tree
 
-type MathFunc func(value Value) (Value, error)
+type CalcFn func(value Value) (Value, error)
 
-var NoneFn MathFunc = func(value Value) (Value, error) {
+var NoneFn CalcFn = func(value Value) (Value, error) {
 	return value, nil
 }
 

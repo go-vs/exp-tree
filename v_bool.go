@@ -3,7 +3,7 @@ package exp_tree
 // Bool store bool value
 type Bool bool
 
-func (b Bool) F(op Operator) MathFunc {
+func (b Bool) F(op Operator) CalcFn {
 	return bMp[op]
 }
 
@@ -40,7 +40,7 @@ var bNot = chainValue(as[Bool], func(v Bool) (Bool, error) {
 	return !v, nil
 })
 
-var bMp = map[Operator]MathFunc{
+var bMp = map[Operator]CalcFn{
 	None: NoneFn,
 	And:  bAnd,
 	Or:   bOr,

@@ -7,7 +7,7 @@ func (s String) Type() NodeType {
 	return NValue
 }
 
-func (s String) F(op Operator) MathFunc {
+func (s String) F(op Operator) CalcFn {
 	return stringMap[op]
 }
 
@@ -15,7 +15,7 @@ func (String) Variables() VariableMap {
 	return nil
 }
 
-var stringMap = map[Operator]MathFunc{
+var stringMap = map[Operator]CalcFn{
 	None: NoneFn,
 	In:   chainValue(as[Array], arrIn[String]),
 	Eq:   chainValue(chain(as[Array], asArr[String]), stringEq),
